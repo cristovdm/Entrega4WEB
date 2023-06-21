@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TicketsApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <%= render "layouts/navbar" %>
+
+  <body class="bg-image">
+    <%= yield %>
+  </body>
+</html>
+
+<style>
+  body {
+    background-image: url('https://wallpapercave.com/wp/wp7740421.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>

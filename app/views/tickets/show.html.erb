@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2><%= @ticket.title %></h2>
+          <p><strong>Priority:</strong> <%= @ticket.priority %></p>
+          <p><strong>Description:</strong> <%= @ticket.description %></p>
+          <p><strong>Tags:</strong> <%= @ticket.tags %></p>
+          <p><strong>State:</strong> <%= @ticket.state %></p>
+          <p><strong>Executive:</strong> <%= @ticket.executive_user.name %> <%= @ticket.executive_user.last_name %></p>
+          <p><strong>Incident Creation Date:</strong> <%= @ticket.created_at.strftime('%H:%M, %b %d, %Y') %></p>
+          <% unless @ticket.closed_at.nil? %>
+          <p><strong>Incident Resolution Date:</strong> <%= @ticket.closed_at.strftime('%H:%M, %b %d, %Y') %></p>
+          <% end %>
+          <% unless @ticket.mark.nil? %>
+          <p><strong>Mark Given:</strong> <%= @ticket.mark %></p>
+          <% end %>
+          <hr>
+          <h3>Comments</h3>
+          <% @ticket.comments.each do |comment| %>
+            <div class="d-flex flex-column">
+              <div class="comment">
+                <p><strong><%= comment.user.name %>:</strong> <%= comment.body %></p>
+              </div>
+              <% if comment.created_at %>
+                <div class="text-muted text-right">
+                  <%= comment.created_at.strftime('%H:%M, %b %d, %Y') %>
+                </div>
+              <% end %>
+            </div>
+            <hr>
+          <% end %>
+          <% if (current_user == @ticket.normal_user || current_user == @ticket.executive_user) %>
+
+
+
+            <% if @ticket.state != "closed" %>
+            <h3>Add a Comment</h3>
+            <%= form_for [@ticket, @ticket.comments.build] do |f| %>
+              <div class="field">
+                <%= f.text_area :body, placeholder: "Your comment", class: "form-control" %>
+              </div>
+              <div class="text mt-3">
+              <%= f.submit "Comment", class: "btn btn-success" %>
+              </div>
+            <% end %>
+            <% end %>
+
+
+            <% if current_user.executive?%>
+              <hr>
+              <h3>Change Ticket State</h3>
+              <% if @ticket.state != "closed" %>
+                <%= button_to "Close Ticket", close_ticket_path(@ticket), method: :patch, class: "btn btn-danger" %>
+                <% if @ticket.acceptance != true %>
+                <div style="line-height:60%;">
+                    <br>
+                </div>
+                <%= button_to "Request Acceptance", update_acceptance_path(@ticket), method: :patch, class: "btn btn-primary" %>
+                <% end %>
+              <% else %>
+                <%= button_to "Reopen Ticket", reopen_ticket_path(@ticket), method: :patch, class: "btn btn-primary" %>
+              <% end %>
+            <% end %>
+
+          <% if current_user.normal? && @ticket.state != "closed"%>
+            <hr>
+            <h3>Request Acceptance</h3>
+            <%= form_with(model: @ticket, url: close_ticket_path(@ticket), method: :patch) do |f| %>
+              <div class="form-group">
+                <%= f.label :mark, "Select a mark:" %>
+                <%= f.select :mark, options_for_select([1, 2, 3, 4, 5]), prompt: "-", class: "form-control custom-select" %>
+              </div>
+              <%= f.submit "Close Ticket", class: "btn btn-danger" %>
+            <% end %>
+          <% end %>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

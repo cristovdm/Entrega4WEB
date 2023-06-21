@@ -1,0 +1,40 @@
+<div class="container">
+  <% if params[:search].present? %>
+    <% if @tickets.any? %>
+      <div class="alert alert-success" role="alert">
+        Busqueda encontrada
+      </div>
+    <% else %>
+      <div class="alert alert-danger" role="alert">
+        Email no encontrado
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <% if current_user.executive? %>
+        <div class="text-center">
+        <%= link_to "Sort by Priority", tickets_index_path(sort_priority: "priority"), class: "btn btn-light mb-3" %>
+        <%= link_to "Sort by Closed Date", tickets_index_path(sort_closeddate: "closed_date"), class: "btn btn-light mb-3" %>
+        <%= link_to "Sort by Response User", tickets_index_path(sort_last_comment_date: "last_comment_date"), class: "btn btn-light mb-3" %>
+        </div>
+      <% end %>
+      <% @tickets.each do |ticket| %>
+        <h5 class="card-title mb-2"><strong>Title:</strong> <%= ticket.title %></h5>
+        <hr class="border-1 border-dark mt-0 mb-2">
+        <p class="card-text mb-1"><strong>Priority:</strong> <%= ticket.priority %></p>
+        <p class="card-text mb-1"><strong>Description:</strong> <%= ticket.description %></p>
+        <p class="card-text mb-1"><strong>Tags:</strong> <%= ticket.tags %></p>
+        <p class="card-text mb-1"><strong>State:</strong> <%= ticket.state %></p>
+        <p class="card-text mb-1"><strong>Executive:</strong> <%= ticket.executive_user.name %> <%= ticket.executive_user.last_name %> </p>
+        <p class="card-text mb-1"><strong>Incident Creation Date:</strong> <%= ticket.created_at.strftime('%H:%M, %b %d, %Y') %></p>
+        <% unless ticket.closed_at.nil? %>
+        <p><strong>Incident Resolution Date:</strong> <%= ticket.closed_at.strftime('%H:%M, %b %d, %Y') %></p>
+        <% end %>
+        <%= link_to "View Ticket", ticket, class: "btn btn-primary btn-sm" %>
+        <hr class="border-5 border-dark mt-2 mb-3">
+      <% end %>
+    </div>
+  </div>
+</div>
