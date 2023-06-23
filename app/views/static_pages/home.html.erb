@@ -1,6 +1,14 @@
 <div class="container py-5">
-    
-        <h1 class="display-4 mb-4">Welcome <%= current_user.name %> to our Tickets App!</h1>
-        <p class="lead fs-4">Submit your report and we will fix the problem for you!</p>
-    </div>
+  <div class="text-center">
+    <h1 class="display-4 mb-4">Welcome <%= current_user.name %> to our Tickets App!</h1>
+    <% if current_user.normal? %>
+      <p class="lead fs-4">Submit your report and we will fix the problem for you!</p>
+    <% elsif current_user.executive? %>
+      <p class="lead fs-4">Help us answering the users problems!</p>
+    <% elsif current_user.supervisor? %>
+      <p class="lead fs-4">Help us supervise the users and executives!</p>
+    <% elsif current_user.admin? %>
+      <p class="lead fs-4">Do whatever you want to!</p>
+    <% end %>
+  </div>
 </div>

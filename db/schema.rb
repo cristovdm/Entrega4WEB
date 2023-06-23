@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_234256) do
     t.bigint "executive_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "term_at"
     t.datetime "closed_at"
     t.index ["executive_user_id"], name: "index_tickets_on_executive_user_id"
     t.index ["normal_user_id"], name: "index_tickets_on_normal_user_id"

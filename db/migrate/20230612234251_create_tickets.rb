@@ -11,6 +11,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
       t.references :normal_user, null: false, foreign_key: { to_table: :users }
       t.references :executive_user, null: false, foreign_key: { to_table: :users }
       t.timestamps
+      t.datetime :term_at
       t.datetime :closed_at
     end
   end

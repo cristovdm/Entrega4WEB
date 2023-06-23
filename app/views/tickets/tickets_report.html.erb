@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <h2 class="text-center mb-4">Tickets Report</h2>
+      <form action="<%= tickets_report_path %>" method="GET">
+        <div class="form-group">
+          <label for="start_date">Start Date:</label>
+          <input type="date" name="start_date" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="end_date">End Date:</label>
+          <input type="date" name="end_date" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Generate Report</button>
+      </form>
+    </div>
+  </div>
+
+  <% if @total_tickets.present? %>
+    <div class="row mt-5">
+      <div class="col-md-6 mx-auto">
+        <h3 class="text-center">Report Results:</h3>
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Total Tickets:</strong> <%= @total_tickets %></li>
+            <li class="list-group-item"><strong>Open Tickets:</strong> <%= @open_tickets %></li>
+            <li class="list-group-item"><strong>Closed Tickets:</strong> <%= @closed_tickets %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-8 mx-auto">
+        <h3 class="text-center">Tickets Distribution</h3>
+        <canvas id="ticketsChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var ctx = document.getElementById("ticketsChart").getContext("2d");
+        var ticketsChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Total Tickets", "Open Tickets", "Closed Tickets"],
+            datasets: [{
+              label: "Ticket Count",
+              data: [<%= @total_tickets %>, <%= @open_tickets %>, <%= @closed_tickets %>],
+              backgroundColor: [
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(255, 99, 132, 0.2)"
+              ],
+              borderColor: [
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(255, 99, 132, 1)"
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                precision: 0
+              }
+            }
+          }
+        });
+      });
+    </script>
+  <% end %>
+</div>

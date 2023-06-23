@@ -1,25 +1,11 @@
 <h2>Edit Ticket</h2>
 
 <%= form_for @ticket do |f| %>
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :priority %>
-    <%= f.text_field :priority %>
-  </div>
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :tags %>
-    <%= f.text_field :tags %>
-  </div>
-  <div class="field">
-    <%= f.label :state %>
-    <%= f.text_field :state %>
-  </div>
+  <% @editable_attributes.each do |attribute| %>
+    <div class="field">
+      <%= f.label attribute %>
+      <%= f.text_field attribute %>
+    </div>
+  <% end %>
   <%= f.submit "Update Ticket" %>
 <% end %>

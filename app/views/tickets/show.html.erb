@@ -10,11 +10,12 @@
           <p><strong>State:</strong> <%= @ticket.state %></p>
           <p><strong>Executive:</strong> <%= @ticket.executive_user.name %> <%= @ticket.executive_user.last_name %></p>
           <p><strong>Incident Creation Date:</strong> <%= @ticket.created_at.strftime('%H:%M, %b %d, %Y') %></p>
+          <p><strong>Incident Resolution Date:</strong> <%= @ticket.term_at.strftime('%H:%M, %b %d, %Y') %></p>
           <% unless @ticket.closed_at.nil? %>
-          <p><strong>Incident Resolution Date:</strong> <%= @ticket.closed_at.strftime('%H:%M, %b %d, %Y') %></p>
+            <p><strong>Close Resolution Date:</strong> <%= @ticket.closed_at.strftime('%H:%M, %b %d, %Y') %></p>
           <% end %>
           <% unless @ticket.mark.nil? %>
-          <p><strong>Mark Given:</strong> <%= @ticket.mark %></p>
+            <p><strong>Mark Given:</strong> <%= @ticket.mark %></p>
           <% end %>
           <hr>
           <h3>Comments</h3>
@@ -32,38 +33,28 @@
             <hr>
           <% end %>
           <% if (current_user == @ticket.normal_user || current_user == @ticket.executive_user) %>
-
-
-
             <% if @ticket.state != "closed" %>
-            <h3>Add a Comment</h3>
-            <%= form_for [@ticket, @ticket.comments.build] do |f| %>
-              <div class="field">
-                <%= f.text_area :body, placeholder: "Your comment", class: "form-control" %>
-              </div>
-              <div class="text mt-3">
-              <%= f.submit "Comment", class: "btn btn-success" %>
-              </div>
-            <% end %>
-            <% end %>
-
-
-            <% if current_user.executive?%>
-              <hr>
-              <h3>Change Ticket State</h3>
-              <% if @ticket.state != "closed" %>
-                <%= button_to "Close Ticket", close_ticket_path(@ticket), method: :patch, class: "btn btn-danger" %>
-                <% if @ticket.acceptance != true %>
-                <div style="line-height:60%;">
-                    <br>
-                </div>
-                <%= button_to "Request Acceptance", update_acceptance_path(@ticket), method: :patch, class: "btn btn-primary" %>
-                <% end %>
-              <% else %>
-                <%= button_to "Reopen Ticket", reopen_ticket_path(@ticket), method: :patch, class: "btn btn-primary" %>
+              <h3>Add a Comment</h3>
+              <%= form_for [@ticket, @ticket.comments.build] do |f| %>
+                <div class="field"><%= f.text_area :body, placeholder: "Your comment", class: "form-control" %></div>
+                <div class="text mt-3"><%= f.submit "Comment", class: "btn btn-success" %></div>
               <% end %>
             <% end %>
+          <% end %>
 
+          <% if current_user.executive? && current_user == @ticket.executive_user %>
+            <hr>
+            <h3>Change Ticket State</h3>
+            <% if @ticket.state != "closed" %>
+              <%= button_to "Close Ticket", close_ticket_path(@ticket), method: :patch, class: "btn btn-danger" %>
+              <% if @ticket.acceptance != true %>
+                <div style="line-height:60%;"><br></div>
+                <%= button_to "Request Acceptance", update_acceptance_path(@ticket), method: :patch, class: "btn btn-primary" %>
+              <% end %>
+            <% else %>
+              <%= button_to "Reopen Ticket", reopen_ticket_path(@ticket), method: :patch, class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
           <% if current_user.normal? && @ticket.state != "closed"%>
             <hr>
             <h3>Request Acceptance</h3>
@@ -75,7 +66,10 @@
               <%= f.submit "Close Ticket", class: "btn btn-danger" %>
             <% end %>
           <% end %>
-
+          <% if current_user.supervisor? || current_user.admin? %>
+            <hr>
+            <h3>Delete Ticket</h3>
+            <%= button_to "Destroy Ticket", ticket_path(@ticket), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
           <% end %>
         </div>
       </div>

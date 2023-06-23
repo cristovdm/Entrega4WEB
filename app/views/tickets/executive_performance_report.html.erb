@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>Executive Performance Report</h2>
+  <form action="<%= executive_performance_report_path %>" method="GET">
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="form-group">
+          <label for="month">Month:</label>
+          <input type="number" name="month" class="form-control" required>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="form-group">
+          <label for="year">Year:</label>
+          <input type="number" name="year" class="form-control" required>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <button type="submit" class="btn btn-success">Generate Report</button>
+      </div>
+    </div>
+  </form>
+
+  <% if report_data.present? %>
+    <h3>Report Results:</h3>
+    <% report_data.each do |data| %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h4 class="card-title">Executive: <%= data[:executive_name] %></h4>
+          <p class="card-text">Total Tickets Assigned: <%= data[:total_tickets_assigned] %></p>
+          <p class="card-text">Total Tickets Closed: <%= data[:total_tickets_closed] %></p>
+          <p class="card-text">Total Tickets Open: <%= data[:total_tickets_open] %></p>
+          <p class="card-text">Average Evaluation: <%= data[:average_evaluation] %></p>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

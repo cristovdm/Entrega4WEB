@@ -1,0 +1,42 @@
+<div class="container rounded bg-white mt-2 mb-2 border border-dark">
+  <div class="row">
+    <div class="col-md-4 border-right">
+      <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+        <img class="rounded-circle mt-4" width="150px" src="https://i.pinimg.com/originals/41/d1/c8/41d1c8bb7482baa0eb2c2c1643005fde.png">
+        <span class="font-weight-bold"><%= current_user.name %> <%= current_user.last_name %></span>
+        <span class="text-black-500"> <%= current_user.role %> user</span>
+        <span class="text-black-50"><%= current_user.email %></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="col-md-5 border-right">
+      <div class="p-3 py-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="text-right">Edit your Profile</h4>
+        </div>
+        <%= form_for @user, url: update_profile_path, method: :patch do |f| %>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <%= f.label :name, class: "labels" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "first name" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :last_name, class: "labels" %>
+              <%= f.text_field :last_name, class: "form-control", placeholder: "surname" %>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <%= f.label :telephone, class: "labels" %>
+              <%= f.text_field :telephone, class: "form-control", placeholder: "enter phone number" %>
+            </div>
+          </div>
+  
+          <div class="mt-5 text-center">
+            <%= f.submit "Save Profile", class: "btn btn-success profile-button" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

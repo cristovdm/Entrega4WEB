@@ -25,7 +25,34 @@ User.create!(
     password: "password",
     role: "executive"
   )
+
+  User.create!(
+    name: "Milena",
+    last_name: "Yapur",
+    telephone: "94454632",
+    email: "milena@example.com",
+    password: "password",
+    role: "executive"
+  )
   
+  User.create!(
+    name: "Admin",
+    last_name: "User",
+    telephone: "1111111111",
+    email: "admin@example.com",
+    password: "password",
+    role: "admin"
+  )
+  
+  User.create!(
+    name: "Supervisor",
+    last_name: "User",
+    telephone: "2222222222",
+    email: "supervisor@example.com",
+    password: "password",
+    role: "supervisor"
+  )
+
   # Create tickets
   Ticket.create!(
     title: "Bug Fix",
@@ -35,6 +62,17 @@ User.create!(
     state: "open",
     normal_user_id: 1,
     executive_user_id: 2
+  )
+
+  Ticket.create!(
+    title: "Feature Request",
+    priority: "high",
+    description: "Add a new feature to improve user experience",
+    tags: "feature, request",
+    state: "open",
+    normal_user_id: 1,
+    executive_user_id: 2,
+    term_at: Date.today - 3.days
   )
   
   Ticket.create!(
